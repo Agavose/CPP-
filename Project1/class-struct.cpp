@@ -10,6 +10,10 @@
 #include <functional>
 #include <thread>
 #include <numeric>
+#include <mutex>
+#include <future>
+#include <Windows.h>
+#include <condition_variable>
 
 using namespace std;
 
@@ -470,18 +474,155 @@ using namespace std;
 //}
 
 
-void proc(int a)
-{
-	cout << "子线程，传入参数为：" << a << endl;
-	cout << "子线程id：" << this_thread::get_id() << endl;
-}
+//void proc(int a)
+//{
+//	cout << "子线程，传入参数为：" << a << endl;
+//	cout << "子线程id：" << this_thread::get_id() << endl;
+//}
+//
+//int main()
+//{
+//	cout << "主线程" << endl;
+//	int a = 9;
+//	thread th2(proc, a);
+//	cout << "主线程中显示子线程id：" << th2.get_id() << endl;
+//	th2.join();
+//	return 0;
+//}
+
+
+//mutex m;
+//void proc1(int a)
+//{
+//	m.lock();
+//	cout << "poc1正在改写a" << endl;
+//	cout << "原始a= " << a << endl;
+//	cout << "现在a=" << a + 2 << endl;
+//	m.unlock();
+//}
+//
+//void proc2(int a)
+//{
+//	m.lock();
+//	cout << "proc2正在改写a" << endl;
+//	cout << "原始a= " << a << endl;
+//	cout << "现在a=" << a + 1 << endl;
+//	m.unlock();
+//}
+//
+//int main()
+//{
+//	int a = 0;
+//	thread th1(proc1, a);
+//	thread th2(proc2, a);
+//	th1.join();
+//	th2.join();
+//	return 0 ;
+//}
+
+//mutex m;
+//void proc1(int a)
+//{
+//	lock_guard<mutex>g1(m);
+//	cout << "proc1正在改写a" << endl;
+//	cout << "原始a= " << a << endl;
+//	cout << "现在a=" << a + 2 << endl;
+//}
+//
+//void proc2(int a)
+//{
+//	lock_guard<mutex>g2(m);
+//	cout << "proc2正在改写a" << endl;
+//	cout << "原始a= " << a << endl;
+//	cout << "现在a=" << a + 1 << endl;
+//}
+//
+//int main()
+//{
+//	int a = 0;
+//	thread th1(proc1, a);
+//	thread th2(proc2, a);
+//	th1.join();
+//	th2.join();
+//	return 0;
+//}
+
+//double t1(const double a, const double b)
+//{
+//	double c = a + b;
+//	Sleep(3000);
+//	return c;
+//}
+//
+//int main()
+//{
+//	double a = 2.3;
+//	double b = 5.4;
+//	future<double> fu = async(t1, a, b);
+//	cout << "计算中" << endl;
+//	cout << "请稍后" << endl;
+//	cout << "结果=" << fu.get() << endl;
+//	return 0;
+//}
+
+
+//deque<int> q;
+//mutex mu;
+//condition_variable cond;
+//int c = 0;
+//
+//void producer()
+//{
+//	int data1;
+//	while (1)
+//	{
+//		if (c < 3)
+//		{
+//			{
+//				data1 = rand();
+//				unique_lock<mutex>locker(mu);
+//				q.push_front(data1);
+//				cout << "Store: " << data1 << endl;
+//				cond.notify_one();
+//				++c;
+//			}
+//			Sleep(500);
+//		}
+//	}
+//}
+//
+//void consumer()
+//{
+//	int data2;
+//	while (1)
+//	{
+//		{
+//			unique_lock<mutex> locker(mu);
+//			while (q.empty())
+//				cond.wait(locker);
+//			data2 = q.back();
+//			q.pop_back();
+//			cout << "Load:" << data2 << endl;
+//			--c;
+//		}
+//		Sleep(1500);
+//	}
+//}
+//int main()
+//{
+//	thread t1(producer);
+//	thread t2(consumer);
+//	t1.join();
+//	t2.join();
+//	return 0;
+//}
 
 int main()
 {
-	cout << "主线程" << endl;
-	int a = 9;
-	thread th2(proc, a);
-	cout << "主线程中显示子线程id：" << th2.get_id() << endl;
-	th2.join();
+	int i = 1;
+	cout << ++i << " " << ++i << endl;
+	cout << ++i << " " << i++ << endl;
+	cout << i++ << " " << i++ << endl;
+	cout << i++ << " " << ++i << endl;
 	return 0;
 }
